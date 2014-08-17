@@ -3,6 +3,7 @@
 *.dex
 *.class
 *.iml
+.directory
 .gitignore~
 .idea/
 .DS_STORE
