@@ -5,13 +5,9 @@ import com.doomonafireball.betterpickers.datepicker.DatePickerDialogFragment;
 import com.doomonafireball.betterpickers.sample.R;
 import com.doomonafireball.betterpickers.sample.activity.BaseSampleActivity;
 
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormatter;
-import org.joda.time.format.DateTimeFormatterBuilder;
-
+import android.app.FragmentManager;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,12 +16,18 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * User: derek Date: 3/17/13 Time: 3:59 PM
  */
 public class SampleDateListAdapter extends BaseSampleActivity {
+    static int[] months = {Calendar.JANUARY,Calendar.FEBRUARY,Calendar.MARCH,Calendar.APRIL,
+            Calendar.MAY,Calendar.JUNE,Calendar.JULY,Calendar.AUGUST,Calendar.SEPTEMBER,
+            Calendar.OCTOBER, Calendar.NOVEMBER, Calendar.DECEMBER};
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -34,39 +36,36 @@ public class SampleDateListAdapter extends BaseSampleActivity {
 
         ListView list = (ListView) findViewById(R.id.list);
 
-        list.setAdapter(new SampleAdapter(this, getSupportFragmentManager()));
+        list.setAdapter(new SampleAdapter(this, getFragmentManager()));
     }
 
     private class SampleAdapter extends BaseAdapter implements DatePickerDialogFragment.DatePickerDialogHandler {
 
-        private ArrayList<DateTime> mDateTimes;
+        private ArrayList<Calendar> mDateTimes;
         private LayoutInflater mInflater;
         private ViewHolder holder;
         private DatePickerBuilder mDatePickerBuilder;
-        private DateTimeFormatter mDateTimeFormatter = new DateTimeFormatterBuilder()
-                .appendMonthOfYearShortText()
-                .appendLiteral(" ")
-                .appendDayOfMonth(1)
-                .appendLiteral(", ")
-                .appendYear(4, 4)
-                .toFormatter();
+        private DateFormat mDateTimeFormatter = SimpleDateFormat.getDateInstance();
 
         public SampleAdapter(Context context, FragmentManager fm) {
             super();
             mInflater = LayoutInflater.from(context);
 
-            DateTime now = DateTime.now();
-            mDateTimes = new ArrayList<DateTime>();
-            for (int i = 1; i < 13; i++) {
-                DateTime dt = new DateTime().withMonthOfYear(i).withDayOfMonth(1).withYear(now.year().get() - 1);
+            Calendar now = Calendar.getInstance();
+            mDateTimes = new ArrayList<Calendar>();
+            for (int i : months) {
+                Calendar dt = Calendar.getInstance();
+                dt.set(now.get(Calendar.YEAR)-1,i,1);
                 mDateTimes.add(dt);
             }
-            for (int i = 1; i < 13; i++) {
-                DateTime dt = new DateTime().withMonthOfYear(i).withDayOfMonth(1).withYear(now.year().get());
+            for (int i : months) {
+                Calendar dt = Calendar.getInstance();
+                dt.set(now.get(Calendar.YEAR),i,1);
                 mDateTimes.add(dt);
             }
-            for (int i = 1; i < 13; i++) {
-                DateTime dt = new DateTime().withMonthOfYear(i).withDayOfMonth(1).withYear(now.year().get() + 1);
+            for (int i : months) {
+                Calendar dt = Calendar.getInstance();
+                dt.set(now.get(Calendar.YEAR)+1,i,1);
                 mDateTimes.add(dt);
             }
 
@@ -87,7 +86,7 @@ public class SampleDateListAdapter extends BaseSampleActivity {
         }
 
         @Override
-        public DateTime getItem(int position) {
+        public Calendar getItem(int position) {
             return mDateTimes.get(position);
         }
 
@@ -109,8 +108,8 @@ public class SampleDateListAdapter extends BaseSampleActivity {
                 holder = (ViewHolder) view.getTag();
             }
 
-            DateTime dt = getItem(position);
-            holder.text.setText(dt.toString(mDateTimeFormatter));
+            Calendar dt = getItem(position);
+            holder.text.setText(mDateTimeFormatter.format(dt.getTime()));
             holder.button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -125,7 +124,9 @@ public class SampleDateListAdapter extends BaseSampleActivity {
 
         @Override
         public void onDialogDateSet(int reference, int year, int monthOfYear, int dayOfMonth) {
-            DateTime dt = new DateTime().withMonthOfYear(monthOfYear + 1).withDayOfMonth(dayOfMonth).withYear(year);
+            Calendar dt = Calendar.getInstance();
+            int i = months[monthOfYear];
+            dt.set(year,i,dayOfMonth);
             mDateTimes.set(reference, dt);
             notifyDataSetChanged();
         }

@@ -17,12 +17,11 @@
 package com.doomonafireball.betterpickers.radialtimepicker;
 
 import com.doomonafireball.betterpickers.R;
-import com.nineoldandroids.animation.Keyframe;
-import com.nineoldandroids.animation.ObjectAnimator;
-import com.nineoldandroids.animation.PropertyValuesHolder;
-import com.nineoldandroids.animation.ValueAnimator;
-import com.nineoldandroids.view.animation.AnimatorProxy;
 
+import android.animation.Keyframe;
+import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
@@ -302,8 +301,8 @@ public class RadialTextsView extends View {
         kf1 = Keyframe.ofFloat(1f, 0f);
         PropertyValuesHolder fadeOut = PropertyValuesHolder.ofKeyframe("alpha", kf0, kf1);
 
-        mDisappearAnimator = ObjectAnimator.ofPropertyValuesHolder(
-                AnimatorProxy.NEEDS_PROXY ? AnimatorProxy.wrap(this) : this, radiusDisappear, fadeOut)
+        mDisappearAnimator = ObjectAnimator
+                .ofPropertyValuesHolder(this, radiusDisappear, fadeOut)
                 .setDuration(duration);
         mDisappearAnimator.addUpdateListener(mInvalidateUpdateListener);
 
@@ -327,8 +326,8 @@ public class RadialTextsView extends View {
         kf2 = Keyframe.ofFloat(1f, 1f);
         PropertyValuesHolder fadeIn = PropertyValuesHolder.ofKeyframe("alpha", kf0, kf1, kf2);
 
-        mReappearAnimator = ObjectAnimator.ofPropertyValuesHolder(
-                AnimatorProxy.NEEDS_PROXY ? AnimatorProxy.wrap(this) : this, radiusReappear, fadeIn)
+        mReappearAnimator = ObjectAnimator
+                .ofPropertyValuesHolder(this, radiusReappear, fadeIn)
                 .setDuration(totalDuration);
         mReappearAnimator.addUpdateListener(mInvalidateUpdateListener);
     }
