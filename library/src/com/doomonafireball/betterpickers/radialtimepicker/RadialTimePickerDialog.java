@@ -354,7 +354,7 @@ public class RadialTimePickerDialog extends DialogFragment implements OnValueSel
         view.findViewById(R.id.line).setBackgroundColor(mThemeDark ? darkLine : line);
         mDoneButton.setTextColor(mThemeDark ? darkDoneTextColor : doneTextColor);
         mTimePicker.setBackgroundColor(mThemeDark ? lightGray : circleBackground);
-        mDoneButton.setBackgroundResource(mThemeDark ? darkDoneBackground : doneBackground);
+        //mDoneButton.setBackgroundResource(mThemeDark ? darkDoneBackground : doneBackground);
         return view;
     }
 

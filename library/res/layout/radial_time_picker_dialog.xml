@@ -44,13 +44,19 @@
         android:layout_width="match_parent"
         android:layout_height="1dip"
         android:background="@color/line_background" />
-    <Button
-        android:id="@+id/done_button"
-        android:background="@drawable/done_background_color"
+    <LinearLayout
+        style="?android:attr/buttonBarStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="48dp"
-        android:text="@string/done_label"
-        android:textSize="@dimen/done_label_size"
-        android:textColor="@color/done_text_color" />
+        android:orientation="vertical" >
+        <Button
+            android:id="@+id/done_button"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:text="@string/done_label"
+            android:textSize="@dimen/done_label_size"
+            android:textColor="@color/done_text_color" />
+    </LinearLayout>
 </LinearLayout>
